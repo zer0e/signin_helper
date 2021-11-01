@@ -32,7 +32,7 @@ class Sign():
         
 
         self.signin_data_templete = {
-            "act_id":"e202104072769",
+            "act_id":"ea20211026151532",
             "region":"",
             "uid":""
         }
