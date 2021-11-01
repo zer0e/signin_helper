@@ -21,7 +21,7 @@ class Sign():
             'User-Agent': 'okhttp/4.8.0',
             'Cookie' : self.cookie
         }
-        self.signin_url = "https://api-takumi.mihoyo.com/common/euthenia/sign"
+        self.signin_url = "https://api-takumi.mihoyo.com/common/eutheniav2/sign"
         self.get_cookie_token_url = "https://api-takumi.mihoyo.com/auth/api/getCookieAccountInfoBySToken?stoken={}&uid={}"
         self.get_token_url = "https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types={}&uid={}"
         self.get_role_url = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=bh3_cn"
@@ -107,7 +107,8 @@ class Sign():
         signin_data['uid'] = role['uid']
         signin_data['region'] = role['region']
         headers = self.headers.copy()
-        headers['Referer'] = 'https://webstatic.mihoyo.com/bh3/event/euthenia/index.html?bbs_presentation_style=fullscreen&bbs_game_role_required=bh3_cn&bbs_auth_required=true&act_id=ea20211026151532&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
+        # headers['Referer'] = 'https://webstatic.mihoyo.com/bh3/event/euthenia/index.html?bbs_presentation_style=fullscreen&bbs_game_role_required=bh3_cn&bbs_auth_required=true&act_id=ea20211026151532&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
+        headers['Referer'] = 'https://webstatic.mihoyo.com/bh3/event/signin-cn/index.html?bbs_presentation_style=fullscreen&bbs_game_role_required=bh3_cn&bbs_auth_required=true&act_id=ea20211026151532&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
         headers['x-rpc-device_id'] = '40bcca52-56e8-3124-b465-20ddc2334c26'
         h = r.post(self.signin_url,headers=headers,data=json.dumps(signin_data))
         json_data = h.json()
