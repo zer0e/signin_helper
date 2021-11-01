@@ -107,7 +107,7 @@ class Sign():
         signin_data['uid'] = role['uid']
         signin_data['region'] = role['region']
         headers = self.headers.copy()
-        headers['Referer'] = 'https://webstatic.mihoyo.com/bh3/event/euthenia/index.html?bbs_presentation_style=fullscreen&bbs_game_role_required=bh3_cn&bbs_auth_required=true&act_id=e202104072769&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
+        headers['Referer'] = 'https://webstatic.mihoyo.com/bh3/event/euthenia/index.html?bbs_presentation_style=fullscreen&bbs_game_role_required=bh3_cn&bbs_auth_required=true&act_id=ea20211026151532&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
         headers['x-rpc-device_id'] = '40bcca52-56e8-3124-b465-20ddc2334c26'
         h = r.post(self.signin_url,headers=headers,data=json.dumps(signin_data))
         json_data = h.json()
