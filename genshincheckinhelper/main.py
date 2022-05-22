@@ -284,8 +284,10 @@ def job1():
         is_markdown = config.ONEPUSH.get('params', {}).get('markdown')
         content = f'```\n{message_box}```' if is_markdown else message_box
         notify_me(title, content)
-
     log.info('End of process run')
+    for i in finally_result_dict.values():
+        if i[1] > 0:
+            sys.exit(-1)
 
 
 def job2():
