@@ -33,4 +33,10 @@ jobs:
         run: |
             pip install -r requirements.txt 
             python main.py --bbs_cookie "${{ secrets.cookie }}"
+      
+      - name: "rerun signin"
+        if: failure()
+        run: |
+            pip install -r requirements.txt 
+            python main.py --bbs_cookie "${{ secrets.cookie }}"
         
