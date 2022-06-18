@@ -207,10 +207,11 @@ def request(*args, **kwargs):
     count = 0
     max_retries = 3
     sleep_seconds = 5
+    timeout = 10
     while is_retry and count <= max_retries:
         try:
             s = requests.Session()
-            response = s.request(*args, **kwargs)
+            response = s.request(timeout = timeout, *args, **kwargs)
             is_retry = False
         except Exception as e:
             if count == max_retries:
