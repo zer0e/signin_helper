@@ -120,6 +120,8 @@ class Client(object):
             user_data[i]['addons'] = 'Olah! Odomu'
             user_data[i]['sign_response'] = None
             user_data[i]['end'] = ''
+            user_data[i]['reward_name'] = user_data[i].get('reward_name', "") if user_data[i].get('reward_name', "") else ""
+            user_data[i]['reward_cnt'] = user_data[i].get('reward_cnt', "") if user_data[i].get('reward_cnt', "") else ""
             total_sign_day = user_data[i]['total_sign_day']
             is_sign = user_data[i]['is_sign']
 
