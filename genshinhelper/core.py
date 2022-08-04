@@ -93,7 +93,7 @@ class Client(object):
         if is_sign:
             total_sign_day -= 1
 
-        raw_current_reward = rewards_info[total_sign_day] if total_sign_day < len(rewards_info) else []
+        raw_current_reward = rewards_info[total_sign_day] if total_sign_day < len(rewards_info) else {}
         return {'reward_' + k: v for k, v in raw_current_reward.items()}
 
     @property
