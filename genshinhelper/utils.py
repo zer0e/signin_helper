@@ -178,17 +178,17 @@ def get_ds(ds_type: str = None, new_ds: bool = False, data: dict = None, params:
         c = _hexdigest(f'salt={salt}&t={t}&r={r}')
         return f'{t},{r},{c}'
 
-    app_version = '2.3.0'
+    app_version = '2.34.1'
     client_type = '5'
-    salt = 'h8w582wxwgqvahcdkpvdhbh2w9casgfl'
+    salt = '9nQiU3AV0rJSIBWgdynfoGMGKaklfbM7'
     ds = old()
     if ds_type == '2' or ds_type == 'android':
-        app_version = '2.8.0'
+        app_version = '2.34.1'
         client_type = '2'
-        salt = 'dmq2p7ka6nsu0d3ev6nex4k1ndzrnfiy'
+        salt = 'z8DRIUjNDT7IT5IZXvrUAxyupA1peND9'
         ds = old()
     if new_ds:
-        app_version = '2.11.1'
+        app_version = '2.34.1'
         client_type = '5'
         salt = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
         ds = new()
@@ -207,11 +207,10 @@ def request(*args, **kwargs):
     count = 0
     max_retries = 3
     sleep_seconds = 5
-    timeout = 10
     while is_retry and count <= max_retries:
         try:
             s = requests.Session()
-            response = s.request(timeout = timeout, *args, **kwargs)
+            response = s.request(*args, **kwargs)
             is_retry = False
         except Exception as e:
             if count == max_retries:

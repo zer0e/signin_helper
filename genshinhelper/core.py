@@ -93,7 +93,7 @@ class Client(object):
         if is_sign:
             total_sign_day -= 1
 
-        raw_current_reward = rewards_info[total_sign_day] if total_sign_day < len(rewards_info) else {}
+        raw_current_reward = rewards_info[total_sign_day]
         return {'reward_' + k: v for k, v in raw_current_reward.items()}
 
     @property
@@ -106,7 +106,8 @@ class Client(object):
             d1 = roles_info[i]
             d2 = sign_info[i]
             d3 = current_reward[i]
-            merged = merge_dicts(d1, d2, d3)
+            # region of d2 is empty
+            merged = merge_dicts(d2, d1, d3)
             self._user_data.append(merged)
         return self._user_data
 
@@ -120,8 +121,6 @@ class Client(object):
             user_data[i]['addons'] = 'Olah! Odomu'
             user_data[i]['sign_response'] = None
             user_data[i]['end'] = ''
-            user_data[i]['reward_name'] = user_data[i].get('reward_name', "") if user_data[i].get('reward_name', "") else ""
-            user_data[i]['reward_cnt'] = user_data[i].get('reward_cnt', "") if user_data[i].get('reward_cnt', "") else ""
             total_sign_day = user_data[i]['total_sign_day']
             is_sign = user_data[i]['is_sign']
 

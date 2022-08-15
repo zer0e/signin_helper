@@ -51,10 +51,25 @@ class YuanShen(Client):
     @property
     def travelers_dairy(self):
         roles_info = self.roles_info
+        """
         self._travelers_dairy = [
             self.get_travelers_dairy(i['game_uid'], i['region'])
             for i in roles_info
         ]
+        """
+        """
+        修复等级不足10级时无法查看旅行者札记(无法获取每个月获得的摩拉原石数量)
+        导致 _tp 为None
+        使 genshin-checkin-help 中会出现`list index out of range`的bug
+        """
+        self._travelers_dairy = []
+        for i in roles_info:
+            _tp = self.get_travelers_dairy(i['game_uid'], i['region'])
+            if _tp is None:
+                self._travelers_dairy.append({'month_data': {}})
+            else:
+                self._travelers_dairy.append(_tp)
+
         return self._travelers_dairy
 
     def get_travelers_dairy(self, uid: str, region: str, month: int = 0):
@@ -102,7 +117,8 @@ class Honkai3rd(Client):
             'month_hcoin', 'month_star'
         })
 
-        self.rewards_info_url = f'{self.api}/event/luna/info?act_id={self.act_id}' + '&uid={}&region={}'
+        self.sign_info_url = f'{self.api}/event/luna/info?act_id={self.act_id}' + '&uid={}&region={}'
+        self.rewards_info_url = f'{self.api}/event/luna/home?act_id={self.act_id}'
         self.sign_url = f'{self.api}/event/luna/sign'
 
         self._bh3_finance = None
@@ -111,30 +127,19 @@ class Honkai3rd(Client):
     @property
     def sign_info(self):
         if not self._sign_info:
-            rewards_info = self.rewards_info
-            for i in rewards_info:
-                # 0: can not check in
-                # 1: can check in
-                # 2: already checked in
-                current_day = i['today']
-                is_sign = True if i['is_sign'] else False
-                self._sign_info.append({
-                    'total_sign_day': i['total_sign_day'],
-                    'is_sign': is_sign
-                })
+            roles_info = self.roles_info
+            self._sign_info = [
+                self.get_sign_info(i['game_uid'], i['region'])
+                for i in roles_info
+            ]
         return self._sign_info
 
-    @property
-    def rewards_info(self):
-        if not self._rewards_info:
-            log.info(_('Preparing to get monthly rewards information ...'))
-            roles_info = self.roles_info
-            for i in roles_info:
-                url = self.rewards_info_url.format(i['game_uid'], i['region'])
-                response = request('get', url, headers=self.headers, cookies=self.cookie).json()
-                log.debug(response)
-                self._rewards_info.append(nested_lookup(response, 'data', fetch_first=True))
-        return self._rewards_info
+    def get_sign_info(self, uid: str, region: str):
+        log.info(_('Preparing to get check-in information ...'))
+        url = self.sign_info_url.format(uid, region)
+        response = request('get', url, headers=self.headers, cookies=self.cookie).json()
+        data = nested_lookup(response, 'data', fetch_first=True)
+        return extract_subset_of_dict(data, self.required_keys)
 
     @property
     def bh3_finance(self):
@@ -175,8 +180,8 @@ class MysDailyMissions(object):
         self._missions_state = None
         self._posts = None
 
-        self.game_ids_dict = {1: '崩坏3', 2: '原神', 3: '崩坏2', 4: '未定事件簿', 5: '大别野', 6: '崩坏: 星穹铁道'}
-        self.forum_ids_dict = {1: '崩坏3', 26: '原神', 30: '崩坏2', 37: '未定事件簿', 34: '大别野', 52: '崩坏: 星穹铁道'}
+        self.game_ids_dict = {1: '崩坏3', 2: '原神', 3: '崩坏2', 4: '未定事件簿', 5: '大别野', 6: '崩坏: 星穹铁道', 8: '绝区零'}
+        self.forum_ids_dict = {1: '崩坏3', 26: '原神', 30: '崩坏2', 37: '未定事件簿', 34: '大别野', 52: '崩坏: 星穹铁道', 57: '绝区零'}
         self.game_ids = list(self.game_ids_dict.keys())
         self.forum_ids = list(self.forum_ids_dict.keys())
         self.result = {
@@ -285,7 +290,7 @@ class MysDailyMissions(object):
 
         posts = self.get_posts(forum_id)
         [self.view_post(i) for i in random.sample(posts[0:5], 3) if not state['is_view']]
-        [self.upvote_post(i) for i in random.sample(posts[5:17], 10) if not state['is_upvote']]
+        [self.upvote_post(i) for i in random.sample(posts[5:17], 5) if not state['is_upvote']]
         [self.share_post(i) for i in random.sample(posts[-3:-1], 1) if not state['is_share']]
 
         state = self.missions_state
