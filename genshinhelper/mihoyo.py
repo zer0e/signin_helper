@@ -228,20 +228,8 @@ class MysDailyMissions(object):
             raise ValueError(f'The value of game_id is one of {self.game_ids}')
 
         log.info(_('Preparing to check-in for {} ...').format(self.game_ids_dict[game_id]))
-        url = self.sign_url
-        data = {'gids': str(game_id)}
-        headers = get_headers(with_ds=True, ds_type='android_new', data=data)
-        headers.update({
-            'User-Agent': 'okhttp/4.8.0',
-            'Referer': 'https://app.mihoyo.com',
-<<<<<<< HEAD
-            'x-rpc-channel': 'miyousheluodi'
-=======
-            'x-rpc-channel': 'miyousheluodi',
-            'x-rpc-device_id': get_device_id(str(self.cookie)),
->>>>>>> 5402ffbe76885432d387e3cf04bb9d1dcefb9075
-        })
-        response = request('post', url, json=data, headers=headers, cookies=self.cookie).json()
+        url = self.sign_url.format(game_id)
+        response = request('post', url, headers=self.headers, cookies=self.cookie).json()
         message = response.get('message')
         result = {'name': self.game_ids_dict[game_id], 'message': message}
         self.result['sign'].append(result)
@@ -302,11 +290,7 @@ class MysDailyMissions(object):
         [self.sign(i) for i in self.game_ids if not state['is_sign']]
 
         posts = self.get_posts(forum_id)
-<<<<<<< HEAD
-        [self.view_post(i) for i in random.sample(posts[0:5], 5) if not state['is_view']]
-=======
-        [self.view_post(i) for i in random.sample(posts[0:8], 5) if not state['is_view']]
->>>>>>> 5402ffbe76885432d387e3cf04bb9d1dcefb9075
+        [self.view_post(i) for i in random.sample(posts[0:5], 3) if not state['is_view']]
         [self.upvote_post(i) for i in random.sample(posts[5:17], 10) if not state['is_upvote']]
         [self.share_post(i) for i in random.sample(posts[-3:-1], 1) if not state['is_share']]
 
