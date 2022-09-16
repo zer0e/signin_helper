@@ -14,6 +14,7 @@ import os
 import random
 import string
 import time
+import uuid
 from urllib.parse import urlencode
 
 import requests
@@ -178,6 +179,7 @@ def get_ds(ds_type: str = None, new_ds: bool = False, data: dict = None, params:
         c = _hexdigest(f'salt={salt}&t={t}&r={r}')
         return f'{t},{r},{c}'
 
+<<<<<<< HEAD
     app_version = '2.35.2'
     client_type = '5'
     salt = 'N50pqm7FSy2AkFz2B3TqtuZMJ5TOl3Ep'
@@ -189,16 +191,37 @@ def get_ds(ds_type: str = None, new_ds: bool = False, data: dict = None, params:
         ds = old()
     if ds_type == 'android_new':
         app_version = '2.35.2'
+=======
+    app_version = '2.36.1'
+    client_type = '5'
+    salt = 'YVEIkzDFNHLeKXLxzqCA9TzxCpWwbIbk'
+    ds = old()
+    if ds_type == '2' or ds_type == 'android':
+        app_version = '2.36.1'
+        client_type = '2'
+        salt = 'n0KjuIrKgLHh08LWSCYP0WXlVXaYvV64'
+        ds = old()
+    if ds_type == 'android_new':
+        app_version = '2.36.1'
+>>>>>>> 5402ffbe76885432d387e3cf04bb9d1dcefb9075
         client_type = '2'
         salt = 't0qEgfub6cvueAPgR5m9aQWWVciEer7v'
         ds = new()
     if new_ds:
+<<<<<<< HEAD
         app_version = '2.35.2'
+=======
+        app_version = '2.36.1'
+>>>>>>> 5402ffbe76885432d387e3cf04bb9d1dcefb9075
         client_type = '5'
         salt = 'xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs'
         ds = new()
 
     return app_version, client_type, ds
+
+
+def get_device_id(name: str = None):
+    return str(uuid.uuid3(uuid.NAMESPACE_URL, name))
 
 
 def _hexdigest(text):
