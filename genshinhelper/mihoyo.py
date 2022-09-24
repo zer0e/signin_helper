@@ -45,6 +45,7 @@ class YuanShen(Client):
         log.info(_('Preparing to get check-in information ...'))
         url = self.sign_info_url.format(uid, region)
         response = request('get', url, headers=self.headers, cookies=self.cookie).json()
+        log.info("sign response: " + str(response))
         data = nested_lookup(response, 'data', fetch_first=True)
         return extract_subset_of_dict(data, self.required_keys)
 

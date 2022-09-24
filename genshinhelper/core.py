@@ -12,7 +12,7 @@ from .utils import request, log, get_ds, nested_lookup, extract_subset_of_dict, 
 
 
 def get_headers(oversea: bool = False, with_ds: bool = False, *args, **kwargs):
-    ua_cn = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBS/{}'
+    ua_cn = 'Mozilla/5.0 (Linux; Android 12; M2102J2SC Build/SKQ1.211006.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/95.0.4638.74 Mobile Safari/537.36 miHoYoBBS/{}'
     ua_os = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) miHoYoBBSOversea/1.5.0'
     ua_default = ua_os if oversea else ua_cn
     app_version, client_type, ds = get_ds(*args, **kwargs)
