@@ -136,7 +136,7 @@ class Client(object):
                     headers=get_headers(with_ds=True),
                     json=payload, cookies=self.cookie).json()
 
-                log.debug(response)
+                log.info(response)
                 user_data[i]['status'] = response.get('message', -1)
                 user_data[i]['sign_response'] = response
                 retcode = response.get('retcode', -1)
